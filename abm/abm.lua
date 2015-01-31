@@ -1,12 +1,11 @@
 --[[ Variables ]]--
+local version = "build 20150131.1926"
 local defaultOsFolder = "os/"
 local defaultConfigurationFile = "/config.abm"
 
 --[[ Tables ]]--
 local OsList = fs.list(defaultOsFolder)
-local OS = {
-	[1] = {name = "hoa", version = "1.2", boot = "asdsad.lua"}
-}
+local OS = {}
 
 --[[ Functions ]]--
 function listOs()
@@ -22,17 +21,24 @@ function checkSuitableOs(index, os_folder)
 	file = defaultOsFolder..os_folder..defaultConfigurationFile
 	if fs.exists(file) then
 		f = fs.open(file, "r")
-		OS[index] = {name = string.sub(f.readLine(), 6), version = string.sub(f.readLine(), 9), boot = string.sub(f.readLine(), 6)}
+		OS[index] = {folder = defaultOsFolder..os_folder, name = string.sub(f.readLine(), 6), version = string.sub(f.readLine(), 9), boot = string.sub(f.readLine(), 6)}
 		f.close()
 	end
 end
 
 --[[ Main function ]]--
 function main()
+	term.clear()
+	term.setCursorPos(1,1)
+	print("ACL Boot Manager "..version)
+	print()
 	listOs()
+	print()
 	term.write("Select OS: ")
-	selection = read()
-	--Run main file of the selected os
+	selection = tonumber(read())
+	launch = OS[selection].folder.."/"..OS[selection].boot
+	print("Launching: "..launch)
+	shell.run(launch)
 end
 
 local ok, err = pcall(main)
