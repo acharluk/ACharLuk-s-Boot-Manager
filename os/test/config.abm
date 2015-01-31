@@ -1,0 +1,3 @@
+name=Test OS
+version=1.0
+boot=main.lua
