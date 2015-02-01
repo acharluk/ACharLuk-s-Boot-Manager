@@ -1,0 +1,50 @@
+--[[ACL API]]--
+
+--[[ Draw handling ]]--
+
+--Set cursor position
+function scp(x, y)
+	term.setCursorPos(x, y)
+end
+--Clear and set cursor position
+function cls(x, y)
+	term.clear()
+	if x ~= nil and y ~= nil then
+		scp(x, y)
+	end
+end
+--Draw a frame
+function drawFrame(width, height, horizontalSymbol, verticalSymbol, cornerSymbol)
+	for i = 2, width - 1 do
+		scp(i, 4)
+		write(horizontalSymbol)
+		scp(i, height - 4)
+		write(horizontalSymbol)
+	end
+	for i = 4, height - 4 do
+		scp(1, i)
+		write(verticalSymbol)
+		scp(width, i)
+		write(verticalSymbol)
+	end	
+	scp(1, 4) write(cornerSymbol)
+	scp(1, height - 4) write(cornerSymbol)
+	scp(width, height - 4) write(cornerSymbol)
+	scp(width, 4) write(cornerSymbol)
+end
+
+
+--[[ Table handling ]]--
+
+function saveTable(table, file)
+	local f = fs.open(file, "w")
+	f.write(textutils.serialize(table))
+	f.close()
+end
+
+function loadTable(file)
+	local f = f.open(file, "r")
+	local data = file.readAll()
+	f.close()
+	return textutils.unserialize(data)
+end
