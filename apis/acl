@@ -15,7 +15,6 @@ function cls(x, y)
 end
 --Change text and background colors
 function cc(textColor, bgColor)
-
 	term.setTextColor(textColor)
 	term.setBackgroundColor(bgColor)
 end

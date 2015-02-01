@@ -4,30 +4,26 @@ local defaultOsFolder = "os/"
 local defaultConfigurationFile = "/config.abm"
 
 -- Menu frame --
-shor = "-"
-sver = "|"
-scor = "+"
+local shor = "-"
+local sver = "|"
+local scor = "+"
 
-w, h = term.getSize()
+local w, h = term.getSize()
 
-color_bg_inactive = "32768"
-color_tx_inactive = "1"
-color_bg_active = "1"
-color_tx_active = "32768"
+local color_bg_inactive = "32768"
+local color_tx_inactive = "1"
+local color_bg_active = "1"
+local color_tx_active = "32768"
 
 --[[ Tables ]]--
 local OsList = fs.list(defaultOsFolder)
-local OS = {
-	[2] = {folder = "lellua", name = "prueba", version = "v1.2.3.4.5", boot = "main.lua"} -- This is a test menu option
-}
+local OS = {}
 
 --[[ Functions ]]--
 function listOs()
+	OS = {}
 	for i, os_folder in ipairs(OsList) do
 		checkSuitableOs(i, os_folder)
-	end
-	for i = 1, #OS do
-		print(i..". "..OS[i].name.."  Version: "..OS[i].version)
 	end
 end
 
@@ -35,7 +31,12 @@ function checkSuitableOs(index, os_folder)
 	file = defaultOsFolder..os_folder..defaultConfigurationFile
 	if fs.exists(file) then
 		f = fs.open(file, "r")
-		OS[index] = {folder = defaultOsFolder..os_folder, name = string.sub(f.readLine(), 6), version = string.sub(f.readLine(), 9), boot = string.sub(f.readLine(), 6)}
+		OS[index] = {
+			folder = defaultOsFolder..os_folder,
+			name = string.sub(f.readLine(), 6),
+			version = string.sub(f.readLine(), 9),
+			boot = string.sub(f.readLine(), 6)
+		}
 		f.close()
 	end
 end
@@ -43,7 +44,7 @@ end
 --[[
 	Draw main menu
 ]]--
-function drawMenu()
+function drawMenu()	
 	acl.cc(tonumber(color_tx_inactive), tonumber(color_bg_inactive))
 	acl.cls()
 	selected = 1
@@ -68,6 +69,9 @@ function drawMenu()
 				acl.cls(1, 1)
 				shell.run(launch)
 				return
+			elseif k == keys.r then
+				acl.cls()
+				listOs()
 			end
 		end
 	end
