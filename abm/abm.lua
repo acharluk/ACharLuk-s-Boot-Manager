@@ -1,5 +1,5 @@
 --[[ Variables ]]--
-local version = "build 20150201.19706"
+local version = "build 20150201.2035"
 local defaultOsFolder = "os/"
 local defaultConfigurationFile = "/config.abm"
 
