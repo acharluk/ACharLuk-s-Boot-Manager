@@ -8,7 +8,7 @@ local shor = "-"
 local sver = "|"
 local scor = "+"
 
-local w, h = term.getSize()
+local w, h = 0, 0
 
 local color_bg_inactive = "32768"
 local color_tx_inactive = "1"
@@ -56,21 +56,19 @@ function drawMenu()
 			acl.scp(3, math.floor(h / 3 + i))
 			menu(i, OS[i].name.." - version: "..OS[i].version)
 		end
-		ev, k = os.pullEvent()
-		if ev == "key" then
-			if k == keys.up and selected > 1 then
-				selected = selected - 1
-			elseif k == keys.down and selected < #OS then
-				selected = selected + 1
-			elseif k == keys.enter then
-				launch = OS[selected].folder.."/"..OS[selected].boot
-				acl.cls(1, 1)
-				shell.run(launch)
-				return
-			elseif k == keys.r then
-				acl.cls()
-				listOs()
-			end
+		_, k = os.pullEvent("key")
+		if k == keys.up and selected > 1 then
+			selected = selected - 1
+		elseif k == keys.down and selected < #OS then
+			selected = selected + 1
+		elseif k == keys.enter then
+			launch = OS[selected].folder.."/"..OS[selected].boot
+			acl.cls(1, 1)
+			shell.run(launch)
+			return
+		elseif k == keys.r then
+			acl.cls()
+			listOs()
 		end
 	end
 end
@@ -94,6 +92,7 @@ end
 --[[ Main function ]]--
 function main()
 	os.loadAPI("apis/acl")
+	w, h = acl.size()
 	listOs()
 	drawMenu()
 end

@@ -2,6 +2,10 @@
 
 --[[ Draw handling ]]--
 
+--Return terminal size
+function size()
+	return term.getSize()
+end
 --Set cursor position
 function scp(x, y)
 	term.setCursorPos(x, y)
