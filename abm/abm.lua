@@ -1,5 +1,5 @@
 --[[ Variables ]]--
-local version = "build 20150131.1926"
+local version = "build 20150201.19706"
 local defaultOsFolder = "os/"
 local defaultConfigurationFile = "/config.abm"
 
@@ -64,8 +64,6 @@ function drawMenu()
 				selected = selected + 1
 			elseif k == keys.enter then
 				launch = OS[selected].folder.."/"..OS[selected].boot
-				print()
-				print("Launching: "..launch)
 				acl.cls(1, 1)
 				shell.run(launch)
 				return
