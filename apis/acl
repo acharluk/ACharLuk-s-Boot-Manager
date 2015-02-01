@@ -13,6 +13,12 @@ function cls(x, y)
 		scp(x, y)
 	end
 end
+--Change text and background colors
+function cc(textColor, bgColor)
+
+	term.setTextColor(textColor)
+	term.setBackgroundColor(bgColor)
+end
 --Draw a frame
 function drawFrame(width, height, horizontalSymbol, verticalSymbol, cornerSymbol)
 	for i = 2, width - 1 do

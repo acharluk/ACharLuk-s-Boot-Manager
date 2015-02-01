@@ -3,15 +3,17 @@ local version = "build 20150131.1926"
 local defaultOsFolder = "os/"
 local defaultConfigurationFile = "/config.abm"
 
---[[ Menu frame ]]--
+-- Menu frame --
 shor = "-"
 sver = "|"
 scor = "+"
+
 w, h = term.getSize()
-color_bg_inactive = "1"
-color_tx_inactive = "32768"
-color_bg_active = "32768"
-color_tx_active = "1"
+
+color_bg_inactive = "32768"
+color_tx_inactive = "1"
+color_bg_active = "1"
+color_tx_active = "32768"
 
 --[[ Tables ]]--
 local OsList = fs.list(defaultOsFolder)
@@ -42,16 +44,15 @@ end
 	Draw main menu
 ]]--
 function drawMenu()
-	term.setBackgroundColor(tonumber(color_bg_inactive))
-	term.setTextColor(tonumber(color_tx_inactive))
-	term.clear()
+	acl.cc(tonumber(color_tx_inactive), tonumber(color_bg_inactive))
+	acl.cls()
 	selected = 1
 	while true do
 		acl.drawFrame(w,h,shor,sver,scor)
-		term.setCursorPos(9,2)
+		acl.scp(9,2)
 		write("ACL Boot Manager "..version)
 		for i = 1, #OS do
-			term.setCursorPos(3, math.floor(h / 3 + i))
+			acl.scp(3, math.floor(h / 3 + i))
 			menu(i, OS[i].name.." - version: "..OS[i].version)
 		end
 		ev, k = os.pullEvent()
@@ -79,15 +80,13 @@ end
 ]]--
 function menu(id, text)
 	if selected == id then
-		term.setBackgroundColor(tonumber(color_bg_active))
-		term.setTextColor(tonumber(color_tx_active))
+		acl.cc(tonumber(color_tx_active),tonumber(color_bg_active))
 		write("* ")
 	else
 		write("  ")
 	end
 	write(text)
-	term.setBackgroundColor(tonumber(color_bg_inactive))
-	term.setTextColor(tonumber(color_tx_inactive))
+	acl.cc(tonumber(color_tx_inactive), tonumber(color_bg_inactive))
 end
 
 --[[ Main function ]]--
