@@ -118,6 +118,7 @@ function main()
 	w, h = acl.size()
 	loadConfiguration()
 	OsList = fs.list(conf["default_os_folder"])
+	print()
 	listOs()
 	drawMenu()
 end
