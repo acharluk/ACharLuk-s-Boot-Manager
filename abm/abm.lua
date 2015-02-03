@@ -58,9 +58,10 @@ function checkSuitableOs(index, os_folder)
 			folder = conf["default_os_folder"]..os_folder,
 			name = string.sub(f.readLine(), 6),
 			version = string.sub(f.readLine(), 9),
-			boot = string.sub(f.readLine(), 6)
+			boot = string.sub(f.readLine(), 6),
+			line = 0
 		}
-		f.close()
+		f.close()		
 	end
 end
 
@@ -68,6 +69,7 @@ end
 	Draw main menu
 ]]--
 function drawMenu()
+
 	acl.cc(tonumber(conf["color_tx_inactive"]), tonumber(conf["color_bg_inactive"]))
 	acl.cls()
 	selected = 1
@@ -79,19 +81,30 @@ function drawMenu()
 			acl.scp(3, math.floor(h / 3 + i))
 			menu(i, OS[i].name.." - version: "..OS[i].version)
 		end
-		_, k = os.pullEvent("key")
-		if k == keys.up and selected > 1 then
-			selected = selected - 1
-		elseif k == keys.down and selected < #OS then
-			selected = selected + 1
-		elseif k == keys.enter then
-			launch = OS[selected].folder.."/"..OS[selected].boot
-			acl.cls(1, 1)
-			shell.run(launch)
-			return
-		elseif k == keys.r then
-			acl.cls()
-			listOs()
+		ev, k, _, line = os.pullEvent()
+		if ev == "key" then
+			if k == keys.up and selected > 1 then
+				selected = selected - 1
+			elseif k == keys.down and selected < #OS then
+				selected = selected + 1
+			elseif k == keys.enter then
+				launch = OS[selected].folder.."/"..OS[selected].boot
+				acl.cls(1, 1)
+				shell.run(launch)
+				return
+			elseif k == keys.r then
+				acl.cls()
+				listOs()
+			end
+		elseif ev == "mouse_click" then
+			for i = 1, #OS do
+				if line == OS[i].line then
+					launch = OS[i].folder.."/"..OS[i].boot
+					acl.cls(1, 1)
+					shell.run(launch)
+					return
+				end
+			end
 		end
 	end
 end
@@ -109,6 +122,7 @@ function menu(id, text)
 		write("  ")
 	end
 	write(text)
+	_,OS[id].line = term.getCursorPos()
 	acl.cc(tonumber(conf["color_tx_inactive"]), tonumber(conf["color_bg_inactive"]))
 end
 
