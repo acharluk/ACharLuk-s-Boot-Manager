@@ -1,5 +1,6 @@
 --[[ Variables ]]--
 local ABMConfigFile = "configuration.cfg"
+local disableKeyInput = true
 
 -- Menu frame --
 local shor = "-"
@@ -116,8 +117,12 @@ end
 ]]--
 function menu(id, text)
 	if selected == id then
-		acl.cc(tonumber(conf["color_tx_active"]), tonumber(conf["color_bg_active"]))
-		write("* ")
+		if not disableKeyInput then
+			acl.cc(tonumber(conf["color_tx_active"]), tonumber(conf["color_bg_active"]))
+			write("* ")
+		else
+			write("  ")
+		end
 	else
 		write("  ")
 	end
