@@ -1,6 +1,5 @@
 --[[ Variables ]]--
 local ABMConfigFile = "configuration.cfg"
-local disableKeyInput = true
 
 -- Menu frame --
 local shor = "-"
@@ -117,11 +116,16 @@ end
 ]]--
 function menu(id, text)
 	if selected == id then
-		if not disableKeyInput then
+		if tonumber(conf["enable_key"]) == 1 then
+			write("  ")
+		elseif tonumber(conf["enable_mouse"]) == 1 then
 			acl.cc(tonumber(conf["color_tx_active"]), tonumber(conf["color_bg_active"]))
 			write("* ")
 		else
-			write("  ")
+			print("Please select an input method")
+			print("Press any key to restart")
+			os.pullEvent("key")
+			os.reboot()
 		end
 	else
 		write("  ")
