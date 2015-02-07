@@ -36,7 +36,8 @@ end
 --[[
 	Load ABM configuration
 ]]--
-function loadConfiguration() 
+function loadConfiguration()
+	acl.dg("Loading configuration")
 	f = fs.open("abm/"..ABMConfigFile, "r")
 	while true do
 		line = f.readLine()
@@ -62,20 +63,24 @@ end
 	Search for os and store them with their params in table OS
 ]]--
 function loadOS()
+	acl.dg("Clearing OS table")
 	OS = {}
+	acl.dg("Looking for os folders")
 	OsList = fs.list(getS("default_os_folder"))
-	for i, os_folder in pairs(OsList) do
+	for _, os_folder in pairs(OsList) do
 		path = getS("default_os_folder")..os_folder..getS("default_conf_file")
+		acl.dg("Checking os: "..path)
 		if fs.exists(path) then
 			f = fs.open(path,"r")
-			t = #OS
-			OS[t + 1] = {
+			t = #OS + 1
+			OS[t] = {
 				folder = getS("default_os_folder")..os_folder,
 				name = splitstr(f.readLine(), "=")[2],
 				version = splitstr(f.readLine(), "=")[2],
 				boot = splitstr(f.readLine(), "=")[2],
 			}
 			f.close()
+		acl.dg("OS \""..os_folder.."\" is booteable!")
 		end
 	end
 end
@@ -83,6 +88,7 @@ end
 	Draw main menu
 ]]--
 function drawMenu()
+	acl.dg("Starting to draw menu")
 	acl.cc(getN("color_tx_inactive"), getN("color_bg_inactive"))
 	acl.cls()
 	selected = 1
@@ -103,6 +109,7 @@ function drawMenu()
 			elseif k == keys.enter and getN("enable_touch") == 0 then
 				launch = OS[selected].folder.."/"..OS[selected].boot
 				acl.cls(1, 1)
+				acl.dg("Booting from "..launch)
 				shell.run(launch)
 				return
 			elseif k == keys.r then
@@ -119,6 +126,7 @@ function drawMenu()
 				if line == OS[i].line then
 					launch = OS[i].folder.."/"..OS[i].boot
 					acl.cls(1, 1)
+					acl.dg("Booting from "..launch)
 					shell.run(launch)
 					return
 				end

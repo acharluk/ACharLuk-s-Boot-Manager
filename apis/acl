@@ -1,4 +1,14 @@
 --[[ACL API]]--
+print("Loading ACL API")
+local debug = true
+
+--[[ Useful functions ]]--
+function dg(str, time)
+	if debug then
+		print("["..os.time().."] "..str)
+		sleep(time)
+	end
+end
 
 --[[ Draw handling ]]--
 
@@ -57,3 +67,5 @@ function loadTable(file)
 	f.close()
 	return textutils.unserialize(data)
 end
+
+print("Finished loading ACL API")
