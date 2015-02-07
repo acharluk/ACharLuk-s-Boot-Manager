@@ -89,7 +89,7 @@ function drawMenu()
 	while running do
 		acl.drawFrame(w,h,shor,sver,scor)
 		acl.scp(9,2)
-		write("ACL Boot Manager "..conf["version"])
+		write("ACL Boot Manager "..getS("version"))
 		for i = 1, #OS do
 			acl.scp(3, math.floor(h / 3 + i))
 			menu(i, OS[i].name.." - version: "..OS[i].version)
