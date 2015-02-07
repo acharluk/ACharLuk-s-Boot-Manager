@@ -23,16 +23,19 @@ local OS = {}
 ]]--
 function splitstr(string, reg)
         if reg == nil then
-                reg = "%s"
+            reg = "%s"
         end
         t = {}
         i = 1
         for str in string.gmatch(string, "([^"..reg.."]+)") do
-                t[i] = str
-                i = i + 1
+            t[i] = str
+            i = i + 1
         end
         return t
 end
+--[[
+	Load ABM configuration
+]]--
 function loadConfiguration() 
 	f = fs.open("abm/"..ABMConfigFile, "r")
 	while true do
@@ -43,16 +46,31 @@ function loadConfiguration()
 	end
 	f.close()
 end
+--[[
+	Return number of a config value
+]]--
+function getN(configStr)
+	return tonumber(conf[configStr])
+end
+--[[
+	Return string of a config value
+]]--
+function getS(configStr)
+	return conf[configStr]
+end
+--[[
+	Search for os and store them with their params in table OS
+]]--
 function loadOS()
 	OS = {}
-	OsList = fs.list(conf["default_os_folder"])
+	OsList = fs.list(getS("default_os_folder"))
 	for i, os_folder in pairs(OsList) do
-		path = conf["default_os_folder"]..os_folder..conf["default_conf_file"]
+		path = getS("default_os_folder")..os_folder..getS("default_conf_file")
 		if fs.exists(path) then
 			f = fs.open(path,"r")
 			t = #OS
 			OS[t + 1] = {
-				folder = conf["default_os_folder"]..os_folder,
+				folder = getS("default_os_folder")..os_folder,
 				name = splitstr(f.readLine(), "=")[2],
 				version = splitstr(f.readLine(), "=")[2],
 				boot = splitstr(f.readLine(), "=")[2],
@@ -61,12 +79,11 @@ function loadOS()
 		end
 	end
 end
-
 --[[
 	Draw main menu
 ]]--
 function drawMenu()
-	acl.cc(tonumber(conf["color_tx_inactive"]), tonumber(conf["color_bg_inactive"]))
+	acl.cc(getN("color_tx_inactive"), getN("color_bg_inactive"))
 	acl.cls()
 	selected = 1
 	while running do
@@ -79,11 +96,11 @@ function drawMenu()
 		end
 		ev, k, _, line = os.pullEvent()
 		if ev == "key" then
-			if k == keys.up and selected > 1 and tonumber(conf["enable_touch"]) == 0 then
+			if k == keys.up and selected > 1 and getN("enable_touch") == 0 then
 				selected = selected - 1
-			elseif k == keys.down and selected < #OS and tonumber(conf["enable_touch"]) == 0 then
+			elseif k == keys.down and selected < #OS and getN("enable_touch") == 0 then
 				selected = selected + 1
-			elseif k == keys.enter and tonumber(conf["enable_touch"]) == 0 then
+			elseif k == keys.enter and getN("enable_touch") == 0 then
 				launch = OS[selected].folder.."/"..OS[selected].boot
 				acl.cls(1, 1)
 				shell.run(launch)
@@ -91,8 +108,13 @@ function drawMenu()
 			elseif k == keys.r then
 				acl.cls()
 				loadOS()
+			elseif k == keys.q then
+				print()
+				print("Exiting")
+				print()
+				running = false
 			end
-		elseif ev == "mouse_click" then
+		elseif ev == "mouse_click" and getN("enable_touch") == 1 then
 			for i = 1, #OS do
 				if line == OS[i].line then
 					launch = OS[i].folder.."/"..OS[i].boot
@@ -112,8 +134,8 @@ end
 ]]--
 function menu(id, text)
 	if selected == id then
-		if tonumber(conf["enable_touch"]) == 0 then
-			acl.cc(tonumber(conf["color_tx_active"]), tonumber(conf["color_bg_active"]))
+		if getN("enable_touch") == 0 then
+			acl.cc(getN("color_tx_active"), getN("color_bg_active"))
 			write("* ")
 		else
 			write("  ")
@@ -123,17 +145,16 @@ function menu(id, text)
 	end
 	write(text)
 	_,OS[id].line = term.getCursorPos()
-	acl.cc(tonumber(conf["color_tx_inactive"]), tonumber(conf["color_bg_inactive"]))
+	acl.cc(getN("color_tx_inactive"), getN("color_bg_inactive"))
 end
 
---[[ Main function ]]--
+--[[
+	Main function
+]]--
 function main()
 	os.loadAPI("apis/acl")
 	w, h = acl.size()
 	loadConfiguration()
-	
-	print()
-	--listOs()
 	loadOS()
 	drawMenu()
 end
