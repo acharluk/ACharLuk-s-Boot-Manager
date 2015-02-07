@@ -1,15 +1,6 @@
 --[[ Variables ]]--
-<<<<<<< HEAD
 local running = true
-=======
-<<<<<<< HEAD
-local version = "build 20150201.1706"
-local defaultOsFolder = "os/"
-local defaultConfigurationFile = "/config.abm"
-=======
->>>>>>> 9c821c55352351262fbae9534c9e23b4d4fac380
 local ABMConfigFile = "configuration.cfg"
->>>>>>> 68c2db54fd49722fd363aace515106270cbe8a53
 
 -- Menu frame --
 local shor = "-"
