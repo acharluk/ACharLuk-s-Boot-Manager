@@ -113,8 +113,9 @@ function drawMenu()
 				shell.run(launch)
 				return
 			elseif k == keys.r then
-				acl.cls()
+				loadConfiguration()
 				loadOS()
+				acl.cls()
 			elseif k == keys.q then
 				print()
 				print("Exiting")
