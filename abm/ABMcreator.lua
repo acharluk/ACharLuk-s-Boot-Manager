@@ -19,6 +19,7 @@ function main()
 			create(tArgs[2], tArgs[3], tArgs[4], tArgs[5])
 		elseif mode == "delete" then
 			delete(tArgs[2])
+			print("Successfully deleted: "..tArgs[2])
 		else
 			printError("Usage: ABMcreator.lua [create/delete] folder name version boot")
 		end

@@ -120,6 +120,8 @@ function drawMenu()
 				print("Exiting")
 				print()
 				running = false
+			elseif k == keys.c then
+				shell.run("abm/ABMcreator.lua")
 			end
 		elseif ev == "mouse_click" and getN("enable_touch") == 1 then
 			for i = 1, #OS do
