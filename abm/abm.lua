@@ -147,33 +147,19 @@ function drawMenu2()
 	acl.cls()
 	selected = 1
 	while running do
-		--acl.drawFrame(w,h,shor,sver,scor)
-		--acl.scp(9,2)
-		--write("ACL Boot Manager "..getS("version"))
 		for i = 1, #OS do
-			acl.scp(3, math.floor(h / 3 + i))
-			menu(i, OS[i].name.." - version: "..OS[i].version)
 			if fs.exists(OS[i].folder.."/icon.nfp") then
 				img = paintutils.loadImage(OS[i].folder.."/icon.nfp")
-				paintutils.drawImage(img,w-5,i*5)
+				paintutils.drawImage(img, i * 6, math.floor(h / 2) - 1)
 				acl.cc(colors.white,colors.black)
+				x, y = term.getCursorPos()
+				OS[i].line = y + 1
+				acl.scp(x - 5, OS[i].line)
+				write(OS[i].name)
 			end
 		end
 		ev, k, _, line = os.pullEvent()
 		if ev == "key" then
-			if getN("enable_touch") == 0 then
-				if k == keys.up and selected > 1 then
-					selected = selected - 1
-				elseif k == keys.down and selected < #OS then
-					selected = selected + 1
-				elseif k == keys.enter then
-					launch = OS[selected].folder.."/"..OS[selected].boot
-					acl.cls(1, 1)
-					acl.dg("Booting from "..launch)
-					shell.run(launch)
-					return
-				end
-			end
 			if k == keys.r then
 				loadConfiguration()
 				loadOS()
@@ -186,7 +172,7 @@ function drawMenu2()
 			elseif k == keys.c then
 				shell.run("abm/ABMcreator.lua")
 			end
-		elseif ev == "mouse_click" and getN("enable_touch") == 1 then
+		elseif ev == "mouse_click" then
 			for i = 1, #OS do
 				if line == OS[i].line then
 					launch = OS[i].folder.."/"..OS[i].boot
