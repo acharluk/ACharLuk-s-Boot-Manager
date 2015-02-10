@@ -152,7 +152,7 @@ function drawMenu2()
 				img = paintutils.loadImage(OS[i].folder.."/icon.nfp")
 				paintutils.drawImage(img, i * 6, math.floor(h / 2) - 1)
 				acl.cc(colors.white,colors.black)
-				x, y = term.getCursorPos()
+				x, y = acl.gcp()
 				OS[i].line = y + 1
 				acl.scp(x - 5, OS[i].line)
 				write(OS[i].name)
@@ -203,7 +203,7 @@ function menu(id, text)
 		write("  ")
 	end
 	write(text)
-	_,OS[id].line = term.getCursorPos()
+	_,OS[id].line = acl.gcp()
 	acl.cc(getN("color_tx_inactive"), getN("color_bg_inactive"))
 end
 

@@ -16,6 +16,10 @@ end
 function size()
 	return term.getSize()
 end
+--Return cursor position
+function gcp()
+	return term.getCursorPos()
+end
 --Set cursor position
 function scp(x, y)
 	term.setCursorPos(x, y)
