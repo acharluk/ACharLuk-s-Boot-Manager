@@ -146,16 +146,18 @@ function drawMenu2()
 	acl.cc(colors.black, colors.white)
 	acl.cls()
 	selected = 1
+	space = 0
 	while running do
 		for i = 1, #OS do
 			if fs.exists(OS[i].folder.."/icon.nfp") then
 				img = paintutils.loadImage(OS[i].folder.."/icon.nfp")
-				paintutils.drawImage(img, i * 6, math.floor(h / 2) - 1)
+				paintutils.drawImage(img, i * 6 + space, math.floor(h / 2) - 1)
 				acl.cc(colors.white,colors.black)
 				x, y = acl.gcp()
 				OS[i].line = y + 1
-				acl.scp(x - 5, OS[i].line)
+				acl.scp(x - 7 + space, OS[i].line)
 				write(OS[i].name)
+				space = space + 3
 			end
 		end
 		ev, k, _, line = os.pullEvent()
