@@ -146,8 +146,8 @@ function drawMenu2()
 	acl.cc(colors.black, colors.white)
 	acl.cls()
 	selected = 1
-	space = 0
 	while running do
+		space = 0
 		for i = 1, #OS do
 			if fs.exists(OS[i].folder.."/icon.nfp") then
 				img = paintutils.loadImage(OS[i].folder.."/icon.nfp")
