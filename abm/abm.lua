@@ -152,10 +152,10 @@ function drawMenu2()
 			if fs.exists(OS[i].folder.."/icon.nfp") then
 				img = paintutils.loadImage(OS[i].folder.."/icon.nfp")
 				paintutils.drawImage(img, i * 6 + space, math.floor(h / 2) - 1)
-				acl.cc(colors.white,colors.black)
 				x, y = acl.gcp()
 				OS[i].line = y + 1
 				acl.scp(x - 7 + space, OS[i].line)
+				acl.cc(colors.black,colors.white)
 				write(OS[i].name)
 				space = space + 3
 			end
