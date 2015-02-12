@@ -145,45 +145,33 @@ function drawMenu2()
 	acl.dg("Starting to draw menu")
 	acl.cc(colors.black, colors.white)
 	acl.cls()
-	selected = 1
-	while running do
-		space = 0
-		for i = 1, #OS do
-			if fs.exists(OS[i].folder.."/icon.nfp") then
-				img = paintutils.loadImage(OS[i].folder.."/icon.nfp")
-				paintutils.drawImage(img, i * 6 + space, math.floor(h / 2) - 1)
-				x, y = acl.gcp()
-				OS[i].line = y + 1
-				acl.scp(x - 7 + space, OS[i].line)
-				acl.cc(colors.black,colors.white)
-				write(OS[i].name)
-				space = space + 3
-			end
+	--selected = 1
+	
+	space = 0
+	for i = 1, #OS do
+		if fs.exists(OS[i].folder.."/icon.nfp") then
+			xa = i * 6 + space
+			ya = math.floor(h / 2) - 1
+			img = paintutils.loadImage(OS[i].folder.."/icon.nfp")
+			paintutils.drawImage(img, xa, ya)
+
+			x, y = acl.gcp()
+			OS[i].line = y + 1
+			acl.scp(x - 7 + space, OS[i].line)
+			acl.cc(colors.black,colors.white)
+			write(OS[i].name)
+			space = space + 3
 		end
-		ev, k, _, line = os.pullEvent()
-		if ev == "key" then
-			if k == keys.r then
-				loadConfiguration()
-				loadOS()
-				acl.cls()
-			elseif k == keys.q then
-				print()
-				print("Exiting")
-				print()
-				running = false
-			elseif k == keys.c then
-				shell.run("abm/ABMcreator.lua")
-			end
-		elseif ev == "mouse_click" then
-			for i = 1, #OS do
-				if line == OS[i].line then
-					launch = OS[i].folder.."/"..OS[i].boot
-					acl.cls(1, 1)
-					acl.dg("Booting from "..launch)
-					shell.run(launch)
-					return
-				end
-			end
+	end
+
+	while running do
+		ev, k, x, y = os.pullEvent()
+		if ev == "mouse_click" then
+			
+		elseif ev == "key" then
+			if k == keys.r then loadOS()
+			elseif k == keys.c then shell.run("abm/ABMcreator.lua") end
+			drawMenu2()
 		end
 	end
 end
