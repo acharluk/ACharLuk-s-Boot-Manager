@@ -68,10 +68,10 @@ function loadOS()
 	acl.dg("Looking for os folders")
 	OsList = fs.list(getS("default_os_folder"))
 	for _, os_folder in pairs(OsList) do
-		path = getS("default_os_folder")..os_folder..getS("default_conf_file")
+		path = getS("default_os_folder")..os_folder
 		acl.dg("Checking os: "..path)
-		if fs.exists(path) then
-			f = fs.open(path,"r")
+		if fs.exists(path..getS("default_conf_file")) and fs.exists(path.."/icon.nfp") then
+			f = fs.open(path..getS("default_conf_file"),"r")
 			t = #OS + 1
 			OS[t] = {
 				folder = getS("default_os_folder")..os_folder,
@@ -154,9 +154,10 @@ function drawMenu2()
 			ya = math.floor(h / 2) - 1
 			img = paintutils.loadImage(OS[i].folder.."/icon.nfp")
 			paintutils.drawImage(img, xa, ya)
-
 			x, y = acl.gcp()
 			OS[i].line = y + 1
+			OS[i].xa = xa
+			OS[i].ya = ya
 			acl.scp(x - 7 + space, OS[i].line)
 			acl.cc(colors.black,colors.white)
 			write(OS[i].name)
@@ -167,7 +168,17 @@ function drawMenu2()
 	while running do
 		ev, k, x, y = os.pullEvent()
 		if ev == "mouse_click" then
-			
+			for i = 1, #OS do
+				if x >= OS[i].xa and x <= (OS[i].xa + 6) then
+					if y >= OS[i].ya and y <= (OS[i].ya + 6) then
+						launch = OS[i].folder.."/"..OS[i].boot
+						acl.cls(1, 1)
+						acl.dg("Booting from "..launch)
+						shell.run(launch)
+						return
+					end
+				end
+			end
 		elseif ev == "key" then
 			if k == keys.r then loadOS()
 			elseif k == keys.c then shell.run("abm/ABMcreator.lua") end
