@@ -4,6 +4,6 @@ http://pastebin.com/mUEg26WL
 
 Instructions:
 
-1. Make sure HTTP is anebled in ComputerCraft
+1. Make sure HTTP is enabled in ComputerCraft
 2. Run this command: "pastebin run mUEg26WL"
 3. Reboot to see ABM!
